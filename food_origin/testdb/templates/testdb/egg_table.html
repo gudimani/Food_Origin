@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Eggs data</title>
+    <style>
+        button {
+            margin: 20px;
+            background-color: teal;
+            color: white;
+            padding: 10px;
+            border-radius: 5%;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th,
+        td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        input[type=text] {
+            width: 20%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            box-sizing: border-box;
+            float: right;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Eggs data</h1>
+
+    <form method="GET">
+        <select name="sort_param">
+            <option value="">Sort by</option>
+            <option value="eggtype">eggtype</option>
+            <option value="color">color</option>
+            <option value="size">size</option>
+            <option value="weight">weight</option>
+        </select>
+        <input type="submit" value="Apply">
+        <input type="text" name="filter_param" placeholder="Enter a value to filter">
+        <!-- <input type="text" name="search_param" placeholder="Search by field1 or field2 or field3 or field4"> -->
+
+    </form>
+
+    <table>
+        <tr>
+            <th>eggtype</th>
+            <th>color</th>
+            <th>size</th>
+            <th>weight</th>
+        </tr>
+        {% for egg in eggs %}
+        <tr>
+            <td>{{ egg.eggtype }}</td>
+            <td>{{ egg.color }}</td>
+            <td>{{ egg.size }}</td>
+            <td>{{ egg.weight }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <button type="submit" onclick="location.href='{% url 'export' %}'">Export to excel</button>
+    <form action="{% url 'import' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="excel_file">
+        <button type="submit">Import</button>
+    </form>
+
+
+    {% if success %}
+    <p>Data imported successfully!</p>
+
+    {% endif %}
+
+    <!-- {% if not success %}
+    <p>Data import failed!</p>
+    {% endif %} -->
+
+
+</body>
+
+</html>
